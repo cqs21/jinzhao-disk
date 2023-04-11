@@ -581,6 +581,7 @@ sector_t dm_devsize(struct dm_dev *dev)
 
 void dm_jindisk_destroy(struct dm_target *ti, struct dm_jindisk *sd)
 {
+	del_gc_timer();
 	if (sd->seg_buffer)
 		sd->seg_buffer->destroy(sd->seg_buffer);
 	if (sd->seg_allocator)

@@ -203,14 +203,17 @@ void gc_timer_callback(struct timer_list *gc_timer)
 	mod_timer(gc_timer, jiffies + msecs_to_jiffies(GC_DELAY));
 }
 
+void del_gc_timer(void)
+{
+	del_timer_sync(&gc_timer);
+	if (gc_wq)
+		destroy_workqueue(gc_wq);
+}
+
 void sa_destroy(struct segment_allocator *al)
 {
 	struct default_segment_allocator *this = container_of(
 		al, struct default_segment_allocator, segment_allocator);
-
-	del_timer(&gc_timer);
-	if (gc_wq)
-		destroy_workqueue(gc_wq);
 
 	if (!IS_ERR_OR_NULL(this)) {
 		kfree(this);

@@ -29,5 +29,6 @@ struct default_segment_allocator {
 };
 
 struct segment_allocator *sa_create(void);
+void del_gc_timer(void);
 
 #endif
